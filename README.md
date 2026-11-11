@@ -37,12 +37,21 @@ python -m spacy download en_core_web_sm
 
 ### Word bank
 
-LatentLens needs the contextual word bank of Qwen2.5-VL-7B's LLM at layer 24 (136 MB):
+LatentLens needs the contextual word bank of Qwen2.5-VL-7B's LLM at layer 24, from
+[`McGill-NLP/contextual_embeddings-qwen2.5-vl-7b`](https://huggingface.co/McGill-NLP/contextual_embeddings-qwen2.5-vl-7b).
+The repo holds layers 1, 2, 4, 8, 16, 24, 26 and 27 (28 GB); SeedCut only needs layer 24 (3.7 GB):
 
-- Download `prototypes.pt` from <ANON_LINK>
-- Place it at `data/latentlens/qwen2.5-vl-7b/layer_24/prototypes.pt`, or put it at `<dir>/layer_24/prototypes.pt`
-  and set `SEEDCUT_BANK=<dir>`
-- sha256: `d57edaba0eaa7e55ae39694a2c680a40a2750a2d1103f1369c8381df0bd97c6f`
+```bash
+huggingface-cli download McGill-NLP/contextual_embeddings-qwen2.5-vl-7b \
+    --include "layer_24/*" --local-dir data/latentlens/qwen2.5-vl-7b
+```
+
+With `huggingface_hub>=1.0`, use `hf download` with the same arguments.
+
+This gives `data/latentlens/qwen2.5-vl-7b/layer_24/embeddings_cache.pt`
+(sha256 `92cd6f0724dcda56838aadcf11de13157dee48246f73ed1e9633c7da4d0979e5`). On the first run SeedCut averages it
+into word prototypes and saves `layer_24/prototypes.pt` (136 MB) next to it, so the folder must be writable; later
+runs load the prototypes directly. To keep the bank elsewhere, download to `<dir>` and set `SEEDCUT_BANK=<dir>`.
 
 The model (`Qwen/Qwen2.5-VL-7B-Instruct`) is fetched from the Hugging Face hub; set `SEEDCUT_MODEL` or pass
 `--model` to use a local copy.
