@@ -1,4 +1,4 @@
-"""Entropy-Gradient Grounding (arXiv:2604.08456): the answer entropy backpropagated to the projected visual
+"""Entropy-gradient uncertainty (after arXiv:2604.08456): the answer entropy backpropagated to the projected visual
 embeddings gives a per-patch uncertainty map."""
 import torch
 
@@ -7,7 +7,7 @@ from .model import build_inputs, grid_shape, image_positions
 
 
 def find_text_model(model):
-    # the text model's inputs_embeds holds the merged visual tokens: those are the embeddings EGG differentiates
+    # the text model's inputs_embeds holds the merged visual tokens: those are the embeddings the entropy is differentiated against
     hits = [n for n, _ in model.named_modules() if n.endswith("layers.0") and "visual" not in n and "vision" not in n]
     assert len(hits) == 1, f"expected one text layers.0, got {hits}"
     return model.get_submodule(hits[0].rsplit(".layers.0", 1)[0])

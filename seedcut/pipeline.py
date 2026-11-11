@@ -4,7 +4,7 @@ import torch
 from . import model as M
 from . import semantic as S
 from .boxes import area_frac, crop_ok, pad_box
-from .egg import entropy_saliency
+from .uncertainty import entropy_saliency
 from .propose import GENERIC, mask_box, noun_scores, propose, round_robin_idx, u_rel
 
 LAYER = 24

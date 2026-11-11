@@ -1,11 +1,11 @@
 # SeedCut
 
-A minimal core of **SeedCut** (rrnorm): a training-free re-look pipeline for visually grounded multiple-choice
+A minimal core of **SeedCut**: a training-free re-look pipeline for visually grounded multiple-choice
 VQA on Qwen2.5-VL-7B. The model looks at the regions its own uncertainty points at, then answers again.
 
 ## Method
 
-1. **Relative uncertainty.** Entropy-gradient grounding (EGG) backpropagates the answer entropy to the visual
+1. **Relative uncertainty.** Entropy-gradient uncertainty backpropagates the answer entropy to the visual
    embeddings, for the question (`U`) and for a question-free prompt (`U0`). `U_rel = (U/ΣU) / (U0/ΣU0 + 1/|Ω|)`
    keeps the uncertainty this question adds.
 2. **Seed.** Up to 20 local maxima of the 3×3-smoothed `U_rel`, at least 3 cells apart.
@@ -20,12 +20,12 @@ VQA on Qwen2.5-VL-7B. The model looks at the regions its own uncertainty points 
 ## Layout
 
 ```
-seedcut/propose.py    seeds, seeded normalized cut, coherence, region ranking, noun scores, round-robin
-seedcut/pipeline.py   run_record: regions -> re-look -> fallback
-seedcut/egg.py        entropy-gradient saliency
-seedcut/semantic.py   LatentLens noun targets and patch z-scores
-seedcut/model.py      Qwen2.5-VL loading, prompts, generation
-run.py                one image, one question
+seedcut/propose.py      seeds, seeded normalized cut, coherence, region ranking, noun scores, round-robin
+seedcut/pipeline.py     run_record: regions -> re-look -> fallback
+seedcut/uncertainty.py  entropy-gradient uncertainty maps
+seedcut/semantic.py     LatentLens noun targets and patch z-scores
+seedcut/model.py        Qwen2.5-VL loading, prompts, generation
+run.py                  one image, one question
 ```
 
 ## Setup
@@ -53,8 +53,9 @@ The model (`Qwen/Qwen2.5-VL-7B-Instruct`) is fetched from the Hugging Face hub; 
 python run.py --image img.jpg --question "What color is the umbrella?" --options red blue green yellow
 ```
 
-`--max-pixels 3411968` runs at 3.4 MP; above 1 MP the EGG backward uses gradient checkpointing.
+`--max-pixels 3411968` runs at 3.4 MP; above 1 MP the uncertainty backward uses gradient checkpointing.
 
 ## Acknowledgements
 
-The word bank and patch scoring follow LatentLens (MIT License). The backbone is Qwen2.5-VL-7B-Instruct.
+The uncertainty maps follow entropy-gradient grounding (arXiv:2604.08456). The word bank and patch scoring
+follow LatentLens (MIT License). The backbone is Qwen2.5-VL-7B-Instruct.

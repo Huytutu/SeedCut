@@ -6,7 +6,7 @@ import torch.nn.functional as F
 
 from . import semantic as S
 from .boxes import clip_box
-from .egg import components
+from .uncertainty import components
 
 # ViCrop's generic prompt: U0 is the map a question-free prompt already produces
 GENERIC = "Write a general description of the image."
