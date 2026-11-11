@@ -1,4 +1,4 @@
-"""Entropy-gradient uncertainty (after arXiv:2604.08456): the answer entropy backpropagated to the projected visual
+"""Entropy-gradient uncertainty: the answer entropy backpropagated to the projected visual
 embeddings gives a per-patch uncertainty map."""
 import torch
 
