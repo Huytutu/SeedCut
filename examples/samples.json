@@ -1,0 +1,8 @@
+[
+  {"image": "direct_attributes/sa_4690.jpg", "question": "What is the material of the glove?",
+   "options": ["rubber", "cotton", "kevlar", "leather"], "answer": "A"},
+  {"image": "direct_attributes/sa_86101.jpg", "question": "What is the color of the dustpan?",
+   "options": ["purple", "red", "blue", "white"], "answer": "C"},
+  {"image": "relative_position/sa_6183.jpg", "question": "Is the motorcycle on the left or right side of the dog?",
+   "options": ["left", "right"], "answer": "A"}
+]
